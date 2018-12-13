@@ -44,7 +44,6 @@ def random_mover_backend(userRanges):
 	if is_selection_valid(sel):
 		for key in userRanges:
 			random_translate(key,userRanges[key]['min'],userRanges[key]['max'],sel)
-	
 
 def random_translate(axis,min,max,sel):
 	'''
@@ -55,13 +54,33 @@ def random_translate(axis,min,max,sel):
 	for item in sel:
 		cmds.setAttr(item+'.t'+axis,random.randint(min,max))
 
-	
-userRanges = {
-'x': {'min': 1,'max': 20},
-'y': {'min': 1,'max': 20},
-'z': {'min': 1,'max': 20}
-}
-# validate data 
 
+def random_mover_UI():
+	#declare the UI
+	randomMoverWin = 'lgRandomMover'
 
-random_mover_backend(userRanges)
+	#restart the UI if it all ready exists
+	if cmds.window(randomMoverWin, exists = True):
+		cmds.deleteUI(randomMoverWin)
+	if cmds.windowPref(randomMoverWin, exists = True):
+		cmds.windowPref(randomMoverWin, remove=True)
+
+	cmds.window(randomMoverWin, title = "Random Mover Tool")
+	cmds.scrollLayout('lgRandomMoverSL', childResizable=True)
+	cmds.columnLayout()
+	cmds.floatFieldGrp('XInput', numberOfFields=2, label='X min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('YInput', numberOfFields=2, label='Y min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('ZInput', numberOfFields=2, label='Z min and max', value1=0, value2=0)
+	cmds.button(label='Randomize!',
+	command ="from random_mover import random_mover; random_mover.random_mover_backend({'x':{'min':cmds.floatFieldGrp('XInput',query=True,value1=True),'max': cmds.floatFieldGrp('XInput',query=True,value2=True)},'y':{'min':cmds.floatFieldGrp('YInput',query=True,value1=True),'max': cmds.floatFieldGrp('YInput',query=True,value2=True)},'z':{'min':cmds.floatFieldGrp('ZInput',query=True,value1=True),'max': cmds.floatFieldGrp('ZInput',query=True,value2=True)}})")
+
+	#run the window
+	cmds.showWindow( randomMoverWin )
+
+'''
+Aditional things to add:
+- error if the min is greater then the max
+- update so the user can change the value from local or world space for each objext
+- add rotate
+- add scale
+'''
