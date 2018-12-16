@@ -43,16 +43,16 @@ def random_mover_backend(userRanges):
 	sel = cmds.ls(selection=True)
 	if is_selection_valid(sel):
 		for key in userRanges:
-			random_translate(key,userRanges[key]['min'],userRanges[key]['max'],sel)
+			random_change("t",key,userRanges[key]['min'],userRanges[key]['max'],sel)
 
-def random_translate(axis,min,max,sel):
+def random_change(changeType,axis,min,max,sel):
 	'''
 	this will apply a random translate value
 	'''
 	# get a random number with in a specified range for x,y,z
 	# apply that random number to the tx,ty,tz
 	for item in sel:
-		cmds.setAttr(item+'.t'+axis,random.randint(min,max))
+		cmds.setAttr(item+'.'+changeType+axis,random.randint(min,max))
 
 
 def random_mover_UI():
