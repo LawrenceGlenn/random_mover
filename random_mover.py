@@ -42,8 +42,10 @@ def random_mover_backend(userRanges):
 	# get the name of the objects we want to affect
 	sel = cmds.ls(selection=True)
 	if is_selection_valid(sel):
-		for key in userRanges:
+		for key in userRanges['translate']:
 			random_change("t",key,userRanges[key]['min'],userRanges[key]['max'],sel)
+		for key in userRanges['rotate']:
+			random_change("r",key,userRanges[key]['min'],userRanges[key]['max'],sel)
 
 def random_change(changeType,axis,min,max,sel):
 	'''
@@ -68,11 +70,19 @@ def random_mover_UI():
 	cmds.window(randomMoverWin, title = "Random Mover Tool")
 	cmds.scrollLayout('lgRandomMoverSL', childResizable=True)
 	cmds.columnLayout()
-	cmds.floatFieldGrp('XInput', numberOfFields=2, label='X min and max', value1=0, value2=0)
-	cmds.floatFieldGrp('YInput', numberOfFields=2, label='Y min and max', value1=0, value2=0)
-	cmds.floatFieldGrp('ZInput', numberOfFields=2, label='Z min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('XTranslateInput', numberOfFields=2, label='X Translate min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('YTranslateInput', numberOfFields=2, label='Y Translate min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('ZTranslateInput', numberOfFields=2, label='Z Translate min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('XRotateInput', numberOfFields=2, label='X Rotate min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('YRotateInput', numberOfFields=2, label='Y Rotate min and max', value1=0, value2=0)
+	cmds.floatFieldGrp('ZRotateInput', numberOfFields=2, label='Z Rotate min and max', value1=0, value2=0)
 	cmds.button(label='Randomize!',
-	command ="from random_mover import random_mover; random_mover.random_mover_backend({'x':{'min':cmds.floatFieldGrp('XInput',query=True,value1=True),'max': cmds.floatFieldGrp('XInput',query=True,value2=True)},'y':{'min':cmds.floatFieldGrp('YInput',query=True,value1=True),'max': cmds.floatFieldGrp('YInput',query=True,value2=True)},'z':{'min':cmds.floatFieldGrp('ZInput',query=True,value1=True),'max': cmds.floatFieldGrp('ZInput',query=True,value2=True)}})")
+	command ="from random_mover import random_mover; random_mover.random_mover_backend({'translate':{'x':{'min':cmds.floatFieldGrp('XInput',query=True,value1=True),'max': cmds.floatFieldGrp('XTranslateInput',query=True,value2=True)},
+			    'y':{'min':cmds.floatFieldGrp('YInput',query=True,value1=True),'max': cmds.floatFieldGrp('YTranslateInput',query=True,value2=True)},
+			    'z':{'min':cmds.floatFieldGrp('ZInput',query=True,value1=True),'max': cmds.floatFieldGrp('ZTranslateInput',query=True,value2=True)}},
+			    'rotate':{'x':{'min':cmds.floatFieldGrp('XInput',query=True,value1=True),'max': cmds.floatFieldGrp('XRotateInput',query=True,value2=True)},
+			    'y':{'min':cmds.floatFieldGrp('YInput',query=True,value1=True),'max': cmds.floatFieldGrp('YRotateInput',query=True,value2=True)},
+			    'z':{'min':cmds.floatFieldGrp('ZInput',query=True,value1=True),'max': cmds.floatFieldGrp('ZRotateInput',query=True,value2=True)}}})")
 
 	#run the window
 	cmds.showWindow( randomMoverWin )
