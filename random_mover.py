@@ -46,7 +46,7 @@ def random_mover_backend(userRanges):
 	'''
 	moves selected object in maya by a random values given
 	in the peramiters of a min/max range by the user
-	userRanges = the dictionary contianing the min/max range of xyz
+	userRanges = the hash contianing the min/max range of xyz for tranlation, rotation or scale
 	'''
 	# get the name of the objects we want to affect
 	sel = cmds.ls(selection=True)
@@ -58,10 +58,10 @@ def random_mover_backend(userRanges):
 
 def random_change(changeType,axis,min,max,sel):
 	'''
-	this will apply a random translate value
+	this will apply a random change to translation, scale, or rotation value
 	'''
 	# get a random number with in a specified range for x,y,z
-	# apply that random number to the tx,ty,tz
+	# apply that random number to the tx,ty,tz or rx,ry,rz or sx,sy,sz
 	for item in sel:
 		cmds.setAttr(item+'.'+changeType+axis,random.randint(min,max))
 
@@ -96,6 +96,5 @@ def random_mover_UI():
 
 '''
 Aditional things to add:
-- error if the min is greater then the max
 - update so the user can change the value from local or world space for each objext
 '''
