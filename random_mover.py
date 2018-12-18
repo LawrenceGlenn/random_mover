@@ -33,6 +33,15 @@ def is_selection_valid(sel):
 
 	return result
 
+def is_range_valid(selectedMin, selectedMax)
+	#determine if selected range is valid
+	if selectedMax >= selectedMin:
+		return True
+	else:
+		print '>> invalid range!'
+		print '>> min larger than max'
+		return False
+
 def random_mover_backend(userRanges):
 	'''
 	moves selected object in maya by a random values given
@@ -44,7 +53,8 @@ def random_mover_backend(userRanges):
 	if is_selection_valid(sel):
 		for changeType in userRanges:
 			for key in userRanger[changeType]:
-				random_change(changeType,key,userRanges[key]['min'],userRanges[key]['max'],sel)
+				if is_range_valid(userRanges[key]['min'],userRanges[key]['max']):
+					random_change(changeType,key,userRanges[key]['min'],userRanges[key]['max'],sel)
 
 def random_change(changeType,axis,min,max,sel):
 	'''
